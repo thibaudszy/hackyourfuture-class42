@@ -1,0 +1,224 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "## Question - Özgür\n\nHi, I have read this refers to the global object in a function. But at the same time I have read that functions are objects. And this code creates an object:\n```js\nfunction Circle (radius){\n this.radius = radius;\n} \nconst newCircle2 = new Circle(1); \n```\n\noutput:\n`Circle {radius: 1}`\n\nActually I wonder what \"referring the global object\" means. Thank you!"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Answer\n\nFor the example shown above, you can read more about it in this [MDN example](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this#:~:text=Copy%20to%20Clipboard-,Constructors,-When%20a%20function). Although this is possible, it's not a pattern that is commonly used in JS development, precisely because it is confusing. \n\nAs for what the global `this` object is, it is simply put: \n\n > A global object is an object that always exists in the global scope.\n\nWhat the global object is depends on the environment. In the browser, the global object is the `Window`. For example, you can type `this.innerWidth` in the console to get the width of the viewing port. \n\nYou can learn more about the global object [here](https://developer.mozilla.org/en-US/docs/Glossary/Global_object). "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question - Daniil Kravchenko\n\nHi. I find confusing that it's possible to access an object using the property which doesn't belong to this object\n```js\nvar personObject = {\n    firstName : \"John\",\n    lastName : \"Smith\"\n}\npersonObject.age = 23;\n```\n\nis there a way to protect this object from adding new properties?\n\n### Answer\n\nYes there is. You can use [Object.freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze). Freezing an object prevents extensions and makes existing properties non-writable and non-configurable. A frozen object can no longer be changed: new properties cannot be added, existing properties cannot be removed and the object's prototype cannot be re-assigned.\n\nCareful though, this does not apply to nested objects. \n\nExamples:"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "// Normal object\nconst personObject = {\n  firstName: 'John',\n  lastName: 'Smith',\n};\npersonObject.age = 23;\n\nconsole.log('Normal object', personObject)\n\n// Frozen object\nconst personObjectFrozen = Object.freeze({\n  firstName: 'John',\n  lastName: 'Smith',\n});\npersonObjectFrozen.age = 23;\n\nconsole.log('Frozen object', personObjectFrozen);\n\n// Frozen object with nested properties\n\nconst nestedFrozenObject = Object.freeze({\n  firstName: 'John',\n  lastName: 'Smith',\n  address: {\n    street: 'my straat',\n    postcode: '1001 AA'\n  }\n});\n\nnestedFrozenObject.age = 23;\nnestedFrozenObject.address.number = 100;\n\nconsole.log('Nested frozen object',nestedFrozenObject)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question - Iryna\n\nCould you please explain the difference between `let`,  `const`, `var`. Maybe some shots examples where to use each of them. It seems like I’ve read enough but not sure the difference is totally clear.\n\n### Answer\n\nThe let declaration declares a block-scoped local variable, optionally initializing it to a value.\n\nThe const declaration creates block-scoped constants, much like variables declared using the let keyword.\n\nThe var statement declares a function-scoped or globally-scoped variable, optionally initializing it to a value.\n\n\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "#### Reassignment differences"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "var varVariable = 1;\n\nvar varVariable = 2;\n\nconsole.log('varVariable', varVariable);\n\nlet letVariable = 1;\n\n// let letVariable = 2; This creates an error. Variables declared with let cannot be re-declared. \n\nletVariable = 2\n\nconsole.log('varVariable', letVariable);\n\nconst constVariable = 1; \n\n// constVariable = 2; This is not possible. Variables declared with const cannot be reassigned\n\nconsole.log('constVariable', constVariable);\n\n// However, if a const variable is assigned to an Object or an Array, \n// these can be modified as long as they are not reassigned. \n\nconst constVariable2 = {a: 1};\n\n// constVariable2 = {a: 2};  This is not possible because it's a reassignment. \n\nconstVariable2.b = 3;\n\nconsole.log('constVariable2', constVariable2)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "varVariable 2",
+                                "varVariable 2",
+                                "constVariable 1",
+                                "constVariable2 { a: 1, b: 3 }",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "#### Scope"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "// var\n\nif(true){\n  var globalVar = 1;\n}\n\nfunction func(){\n    if(true){\n        var functionScopedVar = 3;\n    }\n    console.log('gobal scope:', globalThis.globalVar); \n    // In the browser, you could log Window.globalVar and get its value\n    console.log('function scope:', globalThis.functionScopedVar); \n\n}\nfunc();\n\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "gobal scope: 1",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question - Omer\n\nIs it advised to use let instead of var as a variable/keyword. Because let and const showed up lately if I would work on an old project and of course with lots of var , if I try to reassign same values or properties were already assigned to these vars,  would this be messy? If so how can I solve this?\n\n### Answer\n\nIn modern web development, it is advised to always use `let` and `const`. There almost is never a time when you should use var. In general, if you have to work on some old projects that use var, you can update the whole code to use let and const, or just create the new variables with let and const. If you update the previous variables to use `let` and `const`, make sure there is no logic that depends on values being read from the global/function scopes. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question - Mehran\n\nWhat is different between conditional statement and Comparison ?\n\n### answer\n\nA comparison is an operation to compare two or more values. For example: \n\n```js\nx === 1 \ny == undefined\n\nx > y\n```\n\nComparisons are often used within conditional statements\n\nA conditional statement will execute a block of code if a given condition is met. For example: \n\n```js\nif(x === 1){\n    console.log('x is equal to one')\n}\n```"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question - Omer\nWhen I wrote this code:\n```js\n  var message = 'Hello';\n  var name = 'Angela';\n  console.log(message + ' there , ' + name);\n  ```\n\n the name property showed up with a white line on it. But if I implement this one:\n```js\n!( function (){\nvar message = \"Hello\";\nvar name = \"Angela\";\nconsole.log(message + \" there , \" + name);\n}) () ;\n```\n\nthere is not a line on it. I don't know why?\n\n### answer\n\nThe white line is a hint from VSCode. It tells you `name` is deprecated. In this case, it refers to the `window.name` property, which is the global object in the browser's Javascript runtime. Since you are declaring the variable with `var` you are overriding the window's object property. \n\nWhen you declare `name` in the body of a function, then this variable is scoped to the function and is unrelated to the window object. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "  var message = 'Hello';\n  var name = 'Angela';\n  console.log(message + ' there , ' + name);\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Hello there , Angela",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question - Iryna\n\nFor web-development we use Java-script, php, ruby. Perl? ( is it also for web development? Is it used somewhere now?) it’s the first time I’ve read about this language exist.\nIn the rating I’ve found below. Type script is mentioned like separate language. Before I used to think it’s like smth extra part of Java script. Isn’t it? What makes Java Script so popular now?\n\n### Answer\n\nThe browser only understands 4 languages: HTML, CSS, Javascript (JS) and WebAssembly (WASM). Out of the 4, JS is the only actual programming language. WASM being a compilation target for other programming languages. \n\nTypescript (TS) is a superset of JS. This means that all JS code is valid TS, but the opposite is not true. TS is compiled down to JS before being sent to the browser as the browser does not understand TS. Nowadays, TS is more popular than JS for professional web development. However, this does not mean that JS is obsolete since TS is just JS with types, and is what eventually runs in the browser. Understanding JS is essential to understand TS. \n\nAs for the other languages popular for web development, they are used on the server to pre-process the HTML and CSS __before__ being sent to the client (the web browser). This is how most of web development was done before JS frameworks (like React). \n\nJS is now so popular because everything can be done in one language instead of using PHP or Ruby to build the HTML and then adding JS to the page for interactivity. JS frameworks make it easy to build very interactive web apps. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question - Doga\n\nMy question is about the \"callback\" function. I don't understand how to use it.\n\n### Answer\n\nFrom [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Callback_function):\n\n> A callback function is a function passed into another function as an argument, which is then invoked inside the outer function to complete some kind of routine or action.\n\nFor example: "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "function greeting(name) {\n  console.log(`Hello, ${name}`);\n}\n\nfunction sayHelloToBob(callback) {\n  const name = 'Bob';\n  callback(name);\n}\n\nsayHelloToBob(greeting);\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "A very common use case is with array methods, which all take a callback as an argument. For example:"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const myNumbers = [1, 2, 3];\n\nfunction double(num) {\n  return num * 2;\n}\n\nconsole.log(myNumbers.map(double));\n\n// very often, callbacks are passed as anonymous functions\n\nconsole.log(myNumbers.map((num) => num * 2));"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[ 2, 4, 6 ]",
+                                "[ 2, 4, 6 ]",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question - Ohla\n\nWhy it is not working?\n\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question - Muhie\n\nWhich debugger is the best for us as we are studying JS? Should we use more than one?\n\n### Answer\n\nChrome has excellent dev tools and a good debugger. Firefox is pretty good too, especially for CSS. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question - Yuliia\n\nHow to connect java script code with index.html file?\n\n### Answer\n\n#### Short answer: \n\n```html\n<script type=\"text/javascript\" src=\"path-to-javascript-file.js\"></script>\n```\n\n#### Longer one: \n\nYou can find a detailed explanation [here](http://web.simmons.edu/~grabiner/comm244/weeknine/including-javascript.html). "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question - Mohamad\n\nmy question is what is the difference between “ == “ and “ === “ operators ??\nAlso what is the difference between :\n\n```js\nLet x= '5';\nLet x= 5;\n```\n\n### answer\n\n`'5'` is a string, while `5` is a number. You can check this by using the `typeof` operator: \n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "#### Equality:\n\n`==` checks for a loose equality. `===` is strict equality. \n\nFrom [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Equality): \n\n > The equality (==) operator checks whether its two operands are equal, returning a Boolean result. Unlike the strict equality operator, it attempts to convert and compare operands that are of different types.\n\nTo take our previous example: "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                ""
+            ],
+            "outputs": []
+        }
+    ]
+}

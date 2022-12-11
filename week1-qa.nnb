@@ -186,6 +186,38 @@
             "outputs": []
         },
         {
+            "language": "javascript",
+            "source": [
+                "function consoleStyler() {\n    let message = '\"%c\" + txt';\n    let style = `color: ${color}`;\n    style += `background: ${background}`;\n    style += `'font-size: ${fontSize}`;\n    console. log (consoleStyler);\n}\n// Task 2: Build another console log message generator\nfunction celebrateStyler(){\n    let fontStyle = \"color: tomato; font-size: 50px\";\n    if (reason == \"birthday\") {\n        console. log ('%cHappy birthday', fontStyle);\n    }else if (reason == \"champions\") {\n        console. log('%cCongrats on the title!', fontStyle);\n    }\n    else {\n        console. log (message, style);\n    }\n}\n// Task 3: Run both the consoleStyler and the celebrateStyler functions\nconsoleStyler ('#1d5c63', '#ede6db', '40px' , 'Congrats!');\ncelebrateStyler('birthday');\n// Task 4: Insert a congratulatory and custom message\nfunction styleAndCelebrate() {\n    consoleStyler (color, background, fontSize, txt);\n    celebrateStyler (reason) ;\n};\nstyleAndCelebrate('ef7c8e', 'faeded', '30px', 'You made it!', 'champions');\n// Call styleAndCelebrate\nstyleAndCelebrate();"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.error",
+                            "value": {
+                                "name": "ReferenceError",
+                                "message": "color is not defined",
+                                "stack": "    at consoleStyler (<Cell 20> [3, 13])\n    at <Cell 20> [21, 0]\n    at <Cell 20> [31, 46]\n    at Script.runInContext (node:vm:139:12)\n    at Script.runInNewContext (node:vm:144:17)\n    at Object.runInNewContext (node:vm:298:38)\n    at C (/Users/thibaud/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:113345)\n    at t.execCode (/Users/thibaud/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:114312)\n    at k.<anonymous> (/Users/thibaud/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:142156)\n    at k.emit (node:events:527:28)"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stderr",
+                            "value": [
+                                "Debugger ending on ws://127.0.0.1:51077/5c48f669-88cb-4ffd-983b-54c543e11f36",
+                                "Debugger attached.",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "language": "markdown",
             "source": [
                 "## Question - Muhie\n\nWhich debugger is the best for us as we are studying JS? Should we use more than one?\n\n### Answer\n\nChrome has excellent dev tools and a good debugger. Firefox is pretty good too, especially for CSS. "
@@ -216,7 +248,28 @@
         {
             "language": "javascript",
             "source": [
-                ""
+                "let x = 5;\nlet y = '5';\n\nconsole.log('Loose equality', 'x == y is', x == y);\nconsole.log('Strict equality', 'x === y is', x === y);\nconsole.log('Strict equality', 'x === 5 is', x === 5);\n\n\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Loose equality x == y is true",
+                                "Strict equality x === y is false",
+                                "Strict equality x === 5 is true",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "Strict equality checks for both the value __and__ the type. This is almost always what you want and loose equality is rarely used in modern web development. "
             ],
             "outputs": []
         }

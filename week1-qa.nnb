@@ -26,7 +26,24 @@
             "source": [
                 "// Normal object\nconst personObject = {\n  firstName: 'John',\n  lastName: 'Smith',\n};\npersonObject.age = 23;\n\nconsole.log('Normal object', personObject)\n\n// Frozen object\nconst personObjectFrozen = Object.freeze({\n  firstName: 'John',\n  lastName: 'Smith',\n});\npersonObjectFrozen.age = 23;\n\nconsole.log('Frozen object', personObjectFrozen);\n\n// Frozen object with nested properties\n\nconst nestedFrozenObject = Object.freeze({\n  firstName: 'John',\n  lastName: 'Smith',\n  address: {\n    street: 'my straat',\n    postcode: '1001 AA'\n  }\n});\n\nnestedFrozenObject.age = 23;\nnestedFrozenObject.address.number = 100;\n\nconsole.log('Nested frozen object',nestedFrozenObject)"
             ],
-            "outputs": []
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Normal object { firstName: 'John', lastName: 'Smith', age: 23 }",
+                                "Nested frozen object {",
+                                "  firstName: 'John',",
+                                "  lastName: 'Smith',",
+                                "  address: { street: 'my straat', postcode: '1001 AA', number: 100 }",
+                                "}",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "language": "markdown",
@@ -45,7 +62,7 @@
         {
             "language": "javascript",
             "source": [
-                "var varVariable = 1;\n\nvar varVariable = 2;\n\nconsole.log('varVariable', varVariable);\n\nlet letVariable = 1;\n\n// let letVariable = 2; This creates an error. Variables declared with let cannot be re-declared. \n\nletVariable = 2\n\nconsole.log('varVariable', letVariable);\n\nconst constVariable = 1; \n\n// constVariable = 2; This is not possible. Variables declared with const cannot be reassigned\n\nconsole.log('constVariable', constVariable);\n\n// However, if a const variable is assigned to an Object or an Array, \n// these can be modified as long as they are not reassigned. \n\nconst constVariable2 = {a: 1};\n\n// constVariable2 = {a: 2};  This is not possible because it's a reassignment. \n\nconstVariable2.b = 3;\n\nconsole.log('constVariable2', constVariable2)"
+                "var varVariable = 1;\n\nvar varVariable = 2;\n\nconsole.log('varVariable', varVariable);\n\nlet letVariable = 1;\n\n// let letVariable = 2; //This creates an error. Variables declared with let cannot be re-declared. \n\nletVariable = 2\n\nconsole.log('letVariable', letVariable);\n\nconst constVariable = 1; \n\n// constVariable = 2; //This is not possible. Variables declared with const cannot be reassigned\n\nconsole.log('constVariable', constVariable);\n\n// However, if a const variable is assigned to an Object or an Array, \n// these can be modified as long as they are not reassigned. \n\nconst constVariable2 = {a: 1};\n\n// constVariable2 = {a: 2};  This is not possible because it's a reassignment. \n\nconstVariable2.b = 3;\n\n// console.log('constVariable2', constVariable2)"
             ],
             "outputs": [
                 {
@@ -54,10 +71,19 @@
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
                                 "varVariable 2",
-                                "varVariable 2",
-                                "constVariable 1",
-                                "constVariable2 { a: 1, b: 3 }",
+                                "letVariable 2",
+                                "constVariable 2",
                                 ""
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "items": [
+                        {
+                            "mime": "text/plain",
+                            "value": [
+                                "\u001b[33m3\u001b[39m"
                             ]
                         }
                     ]
@@ -74,7 +100,7 @@
         {
             "language": "javascript",
             "source": [
-                "// var\n\nif(true){\n  var globalVar = 1;\n}\n\nfunction func(){\n    if(true){\n        var functionScopedVar = 3;\n    }\n    console.log('gobal scope:', globalThis.globalVar); \n    // In the browser, you could log Window.globalVar and get its value\n    console.log('function scope:', globalThis.functionScopedVar); \n\n}\nfunc();\n\n"
+                "// var\n\nlet globalVar = 1;\n\nfunction func(){\n    let functionScopedVar = 3;\n    console.log('gobal scope:', globalVar); \n    // In the browser, you could log Window.globalVar and get its value\n    console.log('function scope:', functionScopedVar); \n\n}\nfunc();\n\n"
             ],
             "outputs": [
                 {
@@ -83,6 +109,7 @@
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
                                 "gobal scope: 1",
+                                "function scope: 3",
                                 ""
                             ]
                         }
@@ -149,7 +176,19 @@
             "source": [
                 "function greeting(name) {\n  console.log(`Hello, ${name}`);\n}\n\nfunction sayHelloToBob(callback) {\n  const name = 'Bob';\n  callback(name);\n}\n\nsayHelloToBob(greeting);\n"
             ],
-            "outputs": []
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Hello, Bob",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "language": "markdown",
@@ -181,35 +220,23 @@
         {
             "language": "markdown",
             "source": [
-                "## Question - Ohla\n\nWhy it is not working?\n\n"
+                "## Question - Ohla\n\nWhy it is not working? (see code in Slack). \n\n### Answer\n\nIt looks like you forgot to add the parameters to your function. This is how it should be done: \n"
             ],
             "outputs": []
         },
         {
             "language": "javascript",
             "source": [
-                "function consoleStyler() {\n    let message = '\"%c\" + txt';\n    let style = `color: ${color}`;\n    style += `background: ${background}`;\n    style += `'font-size: ${fontSize}`;\n    console. log (consoleStyler);\n}\n// Task 2: Build another console log message generator\nfunction celebrateStyler(){\n    let fontStyle = \"color: tomato; font-size: 50px\";\n    if (reason == \"birthday\") {\n        console. log ('%cHappy birthday', fontStyle);\n    }else if (reason == \"champions\") {\n        console. log('%cCongrats on the title!', fontStyle);\n    }\n    else {\n        console. log (message, style);\n    }\n}\n// Task 3: Run both the consoleStyler and the celebrateStyler functions\nconsoleStyler ('#1d5c63', '#ede6db', '40px' , 'Congrats!');\ncelebrateStyler('birthday');\n// Task 4: Insert a congratulatory and custom message\nfunction styleAndCelebrate() {\n    consoleStyler (color, background, fontSize, txt);\n    celebrateStyler (reason) ;\n};\nstyleAndCelebrate('ef7c8e', 'faeded', '30px', 'You made it!', 'champions');\n// Call styleAndCelebrate\nstyleAndCelebrate();"
+                "function consoleStyler(color, background, fontSize, txt) {\n  let message = `%c ${txt}`;\n  let style = `color: ${color}; `;\n  style += `background: ${background}; `;\n  style += `font-size: ${fontSize}`;\n  console.log(message, style);\n}\n// Task 2: Build another console log message generator\nfunction celebrateStyler(reason){\n    let fontStyle = \"color: tomato; font-size: 50px\";\n    if (reason === \"birthday\") {\n        text = \"happy birthday\"\n        consoleStyler('tomato', 'white' , '50px' , text)\n    }else if (reason == \"champions\") {\n        consoleStyler('tomato', 'white', '50px', 'Congrats on the title!');\n    }\n    else {\n        console.log('tomato', 'white', '50px', message);\n    }\n}\n// Task 3: Run both the consoleStyler and the celebrateStyler functions\ncelebrateStyler('birthday');"
             ],
             "outputs": [
                 {
                     "items": [
                         {
-                            "mime": "application/vnd.code.notebook.error",
-                            "value": {
-                                "name": "ReferenceError",
-                                "message": "color is not defined",
-                                "stack": "    at consoleStyler (<Cell 20> [3, 13])\n    at <Cell 20> [21, 0]\n    at <Cell 20> [31, 46]\n    at Script.runInContext (node:vm:139:12)\n    at Script.runInNewContext (node:vm:144:17)\n    at Object.runInNewContext (node:vm:298:38)\n    at C (/Users/thibaud/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:113345)\n    at t.execCode (/Users/thibaud/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:114312)\n    at k.<anonymous> (/Users/thibaud/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:142156)\n    at k.emit (node:events:527:28)"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "items": [
-                        {
-                            "mime": "application/vnd.code.notebook.stderr",
+                            "mime": "application/vnd.code.notebook.stdout",
                             "value": [
-                                "Debugger ending on ws://127.0.0.1:51077/5c48f669-88cb-4ffd-983b-54c543e11f36",
-                                "Debugger attached.",
+                                "color: tomato;background: white;font-size: 50px",
+                                " happy birthday",
                                 ""
                             ]
                         }

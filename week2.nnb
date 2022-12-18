@@ -1,0 +1,101 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "## Prep exercises\n\n### traffic-light-1"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "const trafficLight = {\n    state: \"green\",         \n  };\n  \n  let rotations = 0;\n  while (rotations < 2) {\n    \n    console.log(\"The traffic light is on\", trafficLight.state);\n  \n    if(trafficLight.state === \"green\"){\n      trafficLight.state = \"orange\";\n    } else if (trafficLight.state === \"orange\"){\n      trafficLight.state = \"red\"\n    } else {\n       trafficLight.state = \"green\"\n       rotations ++;\n    }\n    \n  }"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "The traffic light is on green",
+                                "The traffic light is on orange",
+                                "The traffic light is on red",
+                                "The traffic light is on green",
+                                "The traffic light is on orange",
+                                "The traffic light is on red",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### traffic-light-2"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "const trafficLight = {\n    possibleStates: [\"green\", \"orange\", \"red\"],\n    stateIndex: 0,\n  };\n  \n  let cycle = 0;\n  while (cycle < 2) { \n    trafficLight.possibleStates.forEach(state => {\n      console.log(`The traffic light is on ${state}`)\n    });\n    cycle++;\n  }"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question from Iryna: \n\nAnd last exercise with friends and drinks. It doesn’t work also. It’s continue running with no stop when i open the browser\n\n### Answer"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "const drinkTypes = ['cola', 'lemonade', 'water'];\nlet drinkTray = [];\n\nfor (let i = 0; i < 5; i++){\n    // Iterate over every drink type\n    for(let drinkType of drinkTypes){\n        // If the drink type is present less than twice in drinkTray, add it to the drinkTray and\n        // exit the loop. Otherwise repeat for another drink type. To know if a drink already present in the \n        // drinkTray twice or more, we filter the drink tray to only contain the same elements as drinkType. If \n        // this array has a length of 2 or more, we know that drink is present in the drink tray at least twice. \n        if(drinkTray.filter(drink => drink === drinkType).length < 2){\n            drinkTray.push(drinkType);\n            // break is a keyword used to exit a loop early\n            break;\n        }\n    }\n}\n\nconsole.log(drinkTray)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[ 'cola', 'cola', 'lemonade', 'lemonade', 'water' ]",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question from doğa\n\nHello to everyone. I want to put an exclamation point where I see a dot in the code below. But in my typed code all letters turn into exclamation point. How can I replace dots with exclamation points.\n\n### Answer\n\nYou need to escape the `.`, which in a regex means \"any character except for line breaks\". This will be the case for all the Regex's meta characters: `[] . ^ $ * + ? {} () \\ |`. Learn more about it [here](programiz.com/javascript/regex)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "var yazi=\"Attention. This anounce is only for crew.\";\nyazi=yazi.replace(/\\./g,\"!\");\nconsole.log(yazi);"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Attention! This anounce is only for crew!",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

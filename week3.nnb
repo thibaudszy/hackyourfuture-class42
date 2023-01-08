@@ -15,7 +15,7 @@
             "outputs": []
         },
         {
-            "language": "typescript",
+            "language": "javascript",
             "source": [
                 "\"use strict\";\n/**\n * The `trafficLight` object is now no longer a global variable. Instead,\n * it is defined in function `main()` and passed as a parameter to other\n * functions, as and when needed.\n */\n\nfunction getCurrentState(trafficLight) {\n  // TODO\n  // Should return the current state (i.e. colour) of the `trafficLight`\n  // object passed as a parameter.\n\n  return trafficLight.possibleStates[trafficLight.stateIndex];\n}\n\nfunction getNextStateIndex(trafficLight) {\n  // TODO\n  // Return the index of the next state of the `trafficLight` such that:\n  // - if the color is green, it will turn to orange\n  // - if the color is orange, it will turn to red\n  // - if the color is red, it will turn to green\n  if(trafficLight.stateIndex === trafficLight.possibleStates.length - 1){\n    return 0;\n  }\n  return trafficLight.stateIndex + 1; \n}\n\n// This function loops for the number of seconds specified by the `secs`\n// parameter and then returns.\n// IMPORTANT: This is not the recommended way to implement 'waiting' in\n// JavaScript. You will learn better ways of doing this when you learn about\n// asynchronous code.\nfunction waitSync(secs) {\n  const start = Date.now();\n  while (Date.now() - start < secs * 1000) {\n    // nothing do to here\n  }\n}\n\nfunction main() {\n  const trafficLight = {\n    possibleStates: [\"green\", \"orange\", \"red\"],\n    stateIndex: 0,\n  };\n\n  for (let cycle = 0; cycle < 6; cycle++) {\n    const currentState = getCurrentState(trafficLight);\n    console.log(cycle, \"The traffic light is now\", currentState);\n\n    waitSync(1); // Wait a second before going to the next state\n    trafficLight.stateIndex = getNextStateIndex(trafficLight);\n  }\n}\n\nmain();\n/**\n * The output should be:\n\n0 The traffic light is now green\n1 The traffic light is now orange\n2 The traffic light is now red\n3 The traffic light is now green\n4 The traffic light is now orange\n5 The traffic light is now red\n\n*/"
             ],
@@ -46,7 +46,7 @@
             "outputs": []
         },
         {
-            "language": "typescript",
+            "language": "javascript",
             "source": [
                 "'use strict';\n\nfunction runExperiment(sampleSize) {\n  const valueCounts = [0, 0, 0, 0, 0, 0];\n\n  for (let i = 0; i < sampleSize; i++) {\n    let value = Math.floor(1 + Math.random() * 6); // in place of 6, it could be valueCounts.length\n    valueCounts[value - 1] += 1;\n  }\n\n  const results = [];\n\n  for (let element of valueCounts) {\n    let percentageOfValue = ((element / sampleSize) * 100).toFixed(2);\n    results.push(percentageOfValue);\n    // console.log(results);\n  }\n\n  return results;\n}\n\nfunction main() {\n  const sampleSizes = [1, 100, 1000, 1000000];\n\n  for (let sampleSize of sampleSizes) {\n    console.log(runExperiment(sampleSize), sampleSize);\n  }\n}\n\nmain();"
             ],

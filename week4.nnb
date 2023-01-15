@@ -1,0 +1,463 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# Prep exercises\n\n## Ex 1\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                " const modules = [\n    { name: \"html-css\", displayName: \"HTML/CSS\" },\n    { name: \"javascript\", displayName: \"JavaScript\" },\n    { name: \"browsers\", displayName: \"Browsers\" },\n    { name: \"using-apis\", displayName: \"Using APIs\" },\n    { name: \"node\", displayName: \"Node.js\" },\n    { name: \"databases\", displayName: \"Databases\" },\n    { name: \"react\", displayName: \"React\" },\n    { name: \"project\", displayName: \"Project\" },\n  ];\n  \n   const classes = [\n    {\n      name: \"class32\",\n      startDate: \"23-3-2021\",\n      active: false,\n      graduationDate: \"7-11-2021\",\n    },\n    {\n      name: \"class33\",\n      startDate: \"28-5-2021\",\n      active: false,\n      graduationDate: \"7-11-2021\",\n    },\n    {\n      name: \"class34\",\n      startDate: \"2-9-2021\",\n      active: true,\n      currentModule: \"react\",\n    },\n    {\n      name: \"class35\",\n      startDate: \"14-11-2021\",\n      active: true,\n      currentModule: \"using-apis\",\n    },\n    {\n      name: \"class36\",\n      startDate: \"5-1-2022\",\n      active: true,\n      currentModule: \"javascript\",\n    },\n  ];\n  \n   const students = [\n    { name: \"Fede\", class: \"class33\", gitHubName: \"fedefu\", graduated: false },\n    { name: \"Tjebbe\", class: \"class32\", gitHubName: \"Tjebbee\", graduated: true },\n    { name: \"Rob\", class: \"class34\", gitHubName: \"robvk\", graduated: false },\n    {\n      name: \"Wouter\",\n      class: \"class35\",\n      gitHubName: \"wouterkleijn\",\n      graduated: false,\n    },\n  ];\n  \n  const mentors = [\n    {\n      name: \"Stas\",\n      canTeach: [\"javascript\", \"browsers\", \"using-apis\"],\n      nowTeaching: \"javascript\",\n    },\n    {\n      name: \"Andrej\",\n      canTeach: [\"using-apis\", \"node\"],\n    },\n    {\n      name: \"Shriyans\",\n      canTeach: [\"react\"],\n      nowTeaching: \"react\",\n    },\n    {\n      name: \"Yash\",\n      canTeach: [\"javascript\", \"using-apis\"],\n    },\n    {\n      name: \"Rohan\",\n      canTeach: [\"html/css/git\", \"javascript\", \"node\"],\n    },\n    {\n      name: \"Collin\",\n      canTeach: [\"browsers\", \"using-apis\", \"node\"],\n    },\n  ];\n  "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const possibleMentorsForModule = (moduleName) => {\n  const mentorsForModule = mentors.filter(mentor => mentor.canTeach.includes(moduleName) );\n  return mentorsForModule.map(mentor => mentor.name);\n  };\n  \n  \n  \n  const findMentorForModule = (moduleName) => {\n    const possibleMentors = possibleMentorsForModule(moduleName);\n    const indexOfRandomMentor = Math.floor(Math.random() * possibleMentors.length)\n    return possibleMentors[indexOfRandomMentor]\n  };\n  \n  console.log(findMentorForModule('javascript'));"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Rohan",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Ex 2"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "\n/**\n * We would like to have a list of everyone that is currently participating in a class.\n * This means the students, but also the mentors that are currently teaching the class.\n * The students should be self explanatory, but to find the mentors you will need to follow these steps:\n * - Check what the `currentModule` of the class is\n * - Find the mentor(s) that are `nowTeaching` that module\n *\n * Should return the list of names and their roles. So something like:\n *\n *  [{ name: 'John', role: 'student' }, { name: 'Mary', role: 'mentor' }]\n */\nconst getPeopleOfClass = className => {\n  const studentList = students\n    .filter(student => student.class === className)\n    .map(student => ({ name: student.name, role: 'student' }) );\n  const currentModuleForClass = classes.find(\n    hyfClass => hyfClass.name === className\n  ).currentModule;\n \n  const mentor = mentors.find(\n    mentor => mentor.nowTeaching === currentModuleForClass\n  );\n\n  mentor = { name: mentor?.name, role: 'mentor' };\n\n  const classList = [mentor, ...studentList];\n  return classList;\n};\n// You can uncomment out this line to try your function\n// console.log(getPeopleOfClass('class34'));\n\n/**\n * We would like to have a complete overview of the current active classes.\n * First find the active classes, then for each get the people of that class.\n *\n * Should return an object with the class names as properties.\n * Each class name property contains an array identical to the return from `getPeopleFromClass`. So something like:\n *\n *  {\n *    class34: [{ name: 'John', role: 'student' }, { name: 'Mary', role: 'mentor' }],\n *    class35: [{ name: 'Jane', role: 'student' }, { name: 'Steve', role: 'mentor' }]\n *  }\n//  */\nconst getActiveClasses = () => {\n  const activeClassesObject = {};\n  let classArray = classes\n    .filter(hyfClass => hyfClass.active === true)\n    .map(hyfClass => hyfClass.name);\n  console.log(classArray);\n  let classListDemandedArray = classArray.map(getPeopleOfClass);\n\n  for (let i = 0; i < classArray.length; i++) {\n    activeClassesObject[`${classArray[i]}`] = classListDemandedArray[i];\n  }\n\n  return activeClassesObject;\n};\n// You can uncomment out this line to try your function\nconsole.log(getActiveClasses());"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[ 'class34', 'class35', 'class36' ]",
+                                ""
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.error",
+                            "value": {
+                                "name": "TypeError",
+                                "message": "Assignment to constant variable.",
+                                "stack": "    at getPeopleOfClass (<Cell 5> [25, 8])\n    at Array.map (<anonymous>)\n    at getActiveClasses (<Cell 5> [51, 28])\n    at <Cell 5> [60, 7]\n    at <Cell 5> [26, 46]\n    at Script.runInContext (node:vm:139:12)\n    at Script.runInNewContext (node:vm:144:17)\n    at Object.runInNewContext (node:vm:298:38)\n    at C (/Users/thibaud/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:113345)\n    at t.execCode (/Users/thibaud/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:114312)"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Q&A"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Question 1 - Özgür\n\nIf I add some data elements here (between line 9 and 10), ‘inner function execution phase’ will be postponed and it will stay in the stack for a long time. \nCould this situation make my application or website slower? Should I avoid such a thing? \n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "var count = 0;\n\nfunction makeAdder(x){\n    return function (y){\n        return x + y;\n    }\n}\n\nconst add5 = makeAdder(5);\n//What happens if we add data elements here?\ncount = add5(2)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Question 2 - Daniil\n\nHello. For me \"spread operator\" remains unclear. How to rewrite the following using the spread operator:"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const initialCart = ['bananas', 'milk'];\n\nfunction addToShoppingCart(initialCart, product) {\n  const updatedCart = [...initialCart];\n  updatedCart.push(product);\n  if (updatedCart.length > 3) {\n    updatedCart.shift();\n  }\n  return updatedCart;\n}\n\nconsole.log(addToShoppingCart(initialCart, 'kiwi'));"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[ 'bananas', 'milk', 'kiwi' ]",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const initialCart = ['bananas', 'milk'];\n\nfunction addToShoppingCart(initialCart, product) {\n  return [...initialCart, product].slice(-3)\n}\n\nconsole.log(addToShoppingCart(initialCart, 'kiwi'));\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[ 'bananas', 'milk', 'kiwi' ]",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "You can watch [this video](https://www.youtube.com/watch?v=NIq3qLaHCIs) on destructuring to learn more. \n[MDN article on destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Question 3 - Jalal\n\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "/**\n * It is time to write some bigger code! You have a bankAccount that is modeled as given.\n *\n * Finish the two functions that will donate money (donateMoney) and pay rent (payRent).\n * If you do not have enough funds, call the onFail function given and don't change the bankAccount.\n * If you do have the funds, update the bankAccount accordingly.\n *\n * TIP: have a look at the test code to get more information on what needs to happen\n * TIP: a lot of the things the functions do are the same, you may want to create one or more other functions to not duplicate code\n */\n\nconst bankAccount = {\n    // The currentBalance is how much money you have in your bankAccount.\n    currentBalance: 250,\n    // The transactions are a list of changes so that you can keep track.\n    transactions: [\n      /**\n       * The prevAmount is what your balance was before the transaction,\n       * the newAmount is what your balance was after the transaction\n       * and the reason is what the transaction was about\n       */\n      {\n        prevAmount: 350,\n        newAmount: 250,\n        reason: \"Donation\",\n      },\n    ],\n  };\n  \n  // const { currentBalance, transactions } = bankAccount;\n  \n  const donateMoney = (amount, onSuccess, onFail) => {\n    // TODO complete this function\n    if (amount <= bankAccount.currentBalance) {\n      const newAmount = bankAccount.currentBalance - amount;\n      bankAccount.transactions.push({\n        prevAmount: bankAccount.currentBalance,\n        newAmount: newAmount,\n        reason: \"Donation\",\n      });\n      bankAccount.currentBalance = newAmount;\n      onSuccess();\n    } else {\n      onFail();\n    }\n  };\n  const payRent = (amount, onSuccess, onFail) => {\n    // TODO complete this function\n    if (amount <= bankAccount.currentBalance) {\n      const newAmount = bankAccount.currentBalance - amount;\n      bankAccount.transactions.push({\n        prevAmount: bankAccount.currentBalance,\n        newAmount: newAmount,\n        reason: \"Rent\",\n      });\n      bankAccount.currentBalance = newAmount;\n      onSuccess();\n    } else {\n      onFail();\n    }\n  };\n  \n  /**\n   * TEST CODE. DO NOT EDIT\n   */\n  \n  const onSuccessEnglish = () => {\n    console.log(\"Payment successful! Thank you!\");\n  };\n  const onFailEnglish = () => {\n    console.log(\"You do not have enough money to make this payment.\");\n  };\n  \n  const onSuccessDutch = () => {\n    console.log(\"Betaling geslaagd! Dank u!\");\n  };\n  const onFailDutch = () => {\n    console.log(\"U heeft niet voldoende saldo om deze betaling te doen.\");\n  };\n  \n  donateMoney(100, onSuccessEnglish, onFailEnglish);\n  console.log(bankAccount);\n  \n  payRent(100, onSuccessEnglish, onFailEnglish);\n  console.log(bankAccount);\n  \n  donateMoney(100, onSuccessDutch, onFailDutch);\n  console.log(bankAccount);\n  \n  /**\n  * The console should print out the following:\n  Payment successful! Thank you!\n  {\n  currentBalance: 150,\n  transactions: [\n    { prevAmount: 350, newAmount: 250, reason: 'Donation' },\n    { prevAmount: 250, newAmount: 150, reason: 'Donation' }\n  ]\n  }\n  Payment successful! Thank you!\n  {\n  currentBalance: 50,\n  transactions: [\n    { prevAmount: 350, newAmount: 250, reason: 'Donation' },\n    { prevAmount: 250, newAmount: 150, reason: 'Donation' },\n    { prevAmount: 150, newAmount: 50, reason: 'Rent' }\n  ]\n  }\n  U heeft niet voldoende saldo om deze betaling te doen.\n  {\n  currentBalance: 50,\n  transactions: [\n    { prevAmount: 350, newAmount: 250, reason: 'Donation' },\n    { prevAmount: 250, newAmount: 150, reason: 'Donation' },\n    { prevAmount: 150, newAmount: 50, reason: 'Rent' }\n  ]\n  }\n  * \n  */"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Payment successful! Thank you!",
+                                "{",
+                                "  currentBalance: 50,",
+                                "  transactions: [",
+                                "    { prevAmount: 350, newAmount: 250, reason: 'Donation' },",
+                                "    { prevAmount: 250, newAmount: 150, reason: 'Donation' },",
+                                "    { prevAmount: 150, newAmount: 50, reason: 'Rent' }",
+                                "  ]",
+                                "}",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Question 4 - Doga\n\nHello, while doing research with jest test, sometimes I came across it() structure instead of test(). What is the difference and when should we use which one? Thanks.\n\n#### Answer\n\nIt's the same. If you look at the definition of `test`, you get: \n\n```js\ndeclare var test: jest.It;\n```\n\nMore in the Jest [docs](https://jestjs.io/docs/api#testname-fn-timeout)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Question 5 - Abd-ul-rahman\n\nWhat are the advantages and disadvantages of using higher order functions?\ni saw this example on a website but i didn't understand it could you please explain it\n\n#### Answer\n\nThis is the definition of a higher order function: \n\n> The functions that use other functions as arguments or return functions are named higher-order functions.\n\nThere are multiple benefits to higher order functions. \n\n1. composability: for example with array methods. \n2. reduce code duplication: for example by creating a function that always passes a given parameter for a function. \n\nDisadvantages: \n\n1. Can lead to code that is more complex to understand when over used\n\n\n[Learn more about higher order functions here](https://dmitripavlutin.com/javascript-higher-order-functions/)."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "#### Question 6 - Olha\n\nCan we always transform functions into arrow functions? \n\n#### Answer\n\nIn general yes but with a few exceptions:\n\n - Arrow functions don't have their own bindings to this, arguments, or super, and should not be used as methods.\n - Arrow functions cannot be used as constructors. Calling them with new throws a TypeError. They also don't have access to the new.target keyword.\n - Arrow functions cannot use yield within their body and cannot be created as generator functions.\n - Arrow functions are not hoisted and cannot be declared after they are called"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "// Arrow functions don't have their own bindings to this\n\nconst tutor = {\n    firstName: 'Thibaud',\n    lastName: 'Szymczak',\n    fullName: () => this.firstName + ' ' + this.lastName,\n    fullName2: function(){ return this.firstName + ' ' + this.lastName } \n}\n\nconsole.log('Arrow function:', tutor.fullName())\nconsole.log('function keyword:', tutor.fullName2())\n\n// Arrow functions are not hoisted and cannot be declared after they are called\n\ntry{\n    console.log(arrowFunction())\n} catch {\n    console.log('Error', 'Arrow functions are not hoisted.')\n}\n\nconsole.log(normalFunction());\n\nconst arrowFunction = () => `I'm an arrow function`\nfunction normalFunction (){\n  return `I'm a normal function`\n} \n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Arrow function: undefined undefined",
+                                "function keyword: Thibaud Szymczak",
+                                "I'm an arrow function",
+                                "I'm a normal function",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Question 7 - Ohla\n\nHow to make multiple arrow function? (e.g. using map() and filter(). 3. What is the purpose of \"this\" word/function?\n\n#### Answer:\n\n[MDN article on `this`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Question 8 - Mohamad\n\nFirst Q : how can we loop inside of an array inside of an object inside of an array using for each?\nor is it a good idea to loop through it using for loops inside of each others ?\nSecond Q : can you explain closures a bit more?! still not able to understand it and still struggling with it.\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const mentors = [\n    {\n      name: \"Stas\",\n      canTeach: [\"javascript\", \"browsers\", \"using-apis\"],\n      nowTeaching: \"javascript\",\n    },\n    {\n      name: \"Andrej\",\n      canTeach: [\"using-apis\", \"node\"],\n    },\n    {\n      name: \"Shriyans\",\n      canTeach: [\"react\"],\n      nowTeaching: \"react\",\n    },\n    {\n      name: \"Yash\",\n      canTeach: [\"javascript\", \"using-apis\"],\n    },\n    {\n      name: \"Rohan\",\n      canTeach: [\"html/css/git\", \"javascript\", \"node\"],\n    },\n    {\n      name: \"Collin\",\n      canTeach: [\"browsers\", \"using-apis\", \"node\"],\n    },\n  ];\n\n  const modules = [];\n  \n  mentors.forEach(mentor => mentor.canTeach.forEach(module => modules.push(module)));\n\n console.log({modules})"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "{",
+                                "  modules: [",
+                                "    'javascript',   'browsers',",
+                                "    'using-apis',   'using-apis',",
+                                "    'node',         'react',",
+                                "    'javascript',   'using-apis',",
+                                "    'html/css/git', 'javascript',",
+                                "    'node',         'browsers',",
+                                "    'using-apis',   'node'",
+                                "  ]",
+                                "}",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function makeCounter() {\n    let count = 0;\n    return function() {\n      return count++;\n    };\n  }\n  \n  let counter = makeCounter();\n  console.log(counter()); // 0\n  console.log(counter()); // 1\n  console.log(counter()); // 2"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "0",
+                                "0",
+                                "0",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "In this example, the makeCounter function returns an inner function that has access to the count variable, even though the inner function is executed outside of the makeCounter function's scope. The inner function is a closure because it \"closes over\" the count variable, meaning it retains access to it even after the makeCounter function has finished executing.\n\nThe scope chain in this example would be:\n\n - The counter function has its own scope.\n - The counter function also has access to the variables in the scope of the makeCounter function.\n - The counter function does not have access to variables outside of these two scopes.\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Question 9 - Muhie\n\nI get confused about the concepts of the closure and scope chain so could you explain the relation between the two concepts?\n\n#### Answer\n\nA closure is a function that has access to variables in its outer scope, even when that function is executed outside of its original scope. A scope chain is the hierarchy of nested scopes that an execution context traverses to look for variables. When a closure is created, it retains access to variables in its scope chain, even if those variables are no longer in the current scope. The scope chain of a closure is the chain of scopes that existed when the closure was created, including any variables that were in scope at that time. So in short, the closure refers to the function's ability to access the variables in its scope chain, while the scope chain refers to the hierarchy of scopes that the function can access."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const globalVariable = 100;\n\nif(true){\n    const cantTouchThis = 111;\n}\n\nfunction outerFunction(outerScopeVariable) {\n    function innerFunction() {\n      const innerScopeVariable = 1;\n      console.log({globalVariable}, {outerScopeVariable}, {innerScopeVariable}, {cantTouchThis: undefined});\n    }\n    return innerFunction;\n  }\n  let innerFunc = outerFunction(10);\n  innerFunc(); // prints 10\n  "
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "{ globalVariable: 100 } { outerScopeVariable: 10000 } { innerScopeVariable: 1 } { cantTouchThis: undefined }",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "Here, the innerFunction is a closure as it has access to the variable x defined in the outerFunction scope, even though innerFunction is executed outside of outerFunction.\nScope chain:\n\n- The innerFunc has its own scope.\n- The innerFunc also has access to the variables in the scope of the outerFunction function and to the global scope. \n- The innerFunc does not have access to variables outside of these two scopes."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "Closure of innerFunction\n\n_________________\n\nglobalVariable\nOuterScopeVariable\nInner variables\n\ninnerFunction = ... \n\n_______"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Question 10 - Yunus\n\neveryone, theese are giving the result first one is \" 3,3,3\" and second is \"0,1,2\" . I read the explanation but still i didn't understand why this is happening. I am confused about it"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "for (var i = 0; i < 3; i++) {\n    setTimeout(() => console.log(i), 1);\n  }\n\nlet j; \nfor ( j = 0; j < 3; j++) {\n    setTimeout(() => console.log(j), 1); \n}"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "3",
+                                "3",
+                                "3",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Question 11 - Iryna\n\nIn ex2 we need to filtermentors (find only those who are teaching now). Could you please\nExplain how can we do it. According to the topics is a higher order function, of course, but which one is the most suitable in this case?"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const mentors = [\n    {\n      name: \"Stas\",\n      canTeach: [\"javascript\", \"browsers\", \"using-apis\"],\n      nowTeaching: \"javascript\",\n    },\n    {\n      name: \"Andrej\",\n      canTeach: [\"using-apis\", \"node\"],\n    },\n    {\n      name: \"Shriyans\",\n      canTeach: [\"react\"],\n      nowTeaching: \"react\",\n    },\n    {\n      name: \"Yash\",\n      canTeach: [\"javascript\", \"using-apis\"],\n    },\n    {\n      name: \"Rohan\",\n      canTeach: [\"html/css/git\", \"javascript\", \"node\"],\n    },\n    {\n      name: \"Collin\",\n      canTeach: [\"browsers\", \"using-apis\", \"node\"],\n    },\n  ];\n\n  console.log(mentors.filter(mentor => mentor.nowTeaching));"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[",
+                                "  {",
+                                "    name: 'Stas',",
+                                "    canTeach: [ 'javascript', 'browsers', 'using-apis' ],",
+                                "    nowTeaching: 'javascript'",
+                                "  },",
+                                "  { name: 'Shriyans', canTeach: [ 'react' ], nowTeaching: 'react' }",
+                                "]",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Question 12 - Mehran\n\nI have questions about reduce, Why have to add zero to end of the function?"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const ages = [1,3]\n\nconst ageSum2 = ages.reduce(function(total, age){\n    return total + age\n  }, 0)\n  console.log(ageSum2)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "4",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                " I want to understand purpose of using  oodArr = [ ] as parameter in this function?"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const numbers = [1, 2, 3, 4, 5];\nconst oddNumbers = [7, 9]\nfunction isOdd(array, oddArr = []) {\n  for (let i = 0; i < array.length; i++) {\n    if (array[i] % 2 !== 0) {\n      oddArr.push(array[i]);\n    }\n  }\n  return oddArr;\n}\nconst oddArray = isOdd(numbers, oddNumbers);\nconsole.log(oddArray);"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[ 7, 9, 1, 3, 5 ]",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "This means that if no value (meaning the value is `undefined`) is passed for oddArr, then it will be equal to `[]`. This makes it a [default parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const add = (x, y=10) => x + y;\n\nconsole.log(add(5));\n\nconsole.log(add(5, 5))"
+            ],
+            "outputs": []
+        }
+    ]
+}
